@@ -1,0 +1,248 @@
+@startuml
+
+left to right direction
+
+class Cristal {
+    - Rareza rareza
+    - int estadistica_fuerza
+    - int estadistica_velocidad
+    - int estadistica_defensa
+
+    + Cristal()
+    + Cristal(rareza: Rareza)
+    + operator==(rareza: Rareza): bool
+    + obtener_rareza(): Rareza
+    + set_estadistica_fuerza(fuerza: int): void
+    + set_estadistica_velocidad(velocidad: int): void
+    + set_estadistica_defensa(defensa: int): void
+    + get_estadistica_fuerza(): int
+    + get_estadistica_velocidad(): int
+    + get_estadistica_defensa(): int
+    + rareza_a_string(): std::string
+    + poder(): int
+}
+
+class Megatron {
+    - Intencion intencion
+    - int fuerza
+    - int defensa
+    - int velocidad
+    - int vehiculo
+    - bool transformado
+    - bool cristal_equipado
+    - int fuerza_equipada
+    - int velocidad_equipada
+    - int defensa_equipada
+    - int velocidad_inicial
+
+    + Megatron()
+    + responder(mensaje: std::string): void
+    + sugerir_fusion(): void
+    + cambiar_intencion(intencion: std::string): void
+    + char_a_string_intencion(intencion: char): std::string
+    + Opcion_1(): void
+    + poder(): size_t
+    + equipar_cristal(cristal: Cristal): void
+    + get_fuerza(): size_t
+    + get_defensa(): size_t
+    + get_velocidad(): size_t
+    + get_vehiculo(): size_t
+    + get_transformado(): bool
+    + desequipar_cristal(): void
+    + mostrar_estadisticas_equipada(): void
+    + transformar(): void
+}
+
+class BovedaCristales {
+    - Vector<Cristal> cristales
+    - const size_t LIMITE_CRISTALES
+
+    + almacenar_cristal(cristal_nuevo: Cristal): void
+    + mostrar_cristales(): void
+    + obtener_cristal(posicion: size_t): Cristal
+    + exportar_cristales(ruta: std::string): void
+    + cristal_mas_poderoso(personaje: bool, optimus: OptimusPrime, megatron: Megatron): void
+    + equipar_cristal(personaje: bool, optimus: OptimusPrime, megatron: Megatron): void
+    + mostrar_estadisticas_equipada(optimus: OptimusPrime, megatron: Megatron, personaje: bool): void
+}
+
+class Menu {
+    + Menu()
+    + imprimir_titulo(): void
+    + imprimir_menu_principal(): void
+    + pedir_mensaje(): std::string
+    + imprimir_menu_optimus(): void
+    + imprimir_menu_megatron(): void
+    + imprimir_menu_boveda(): void
+    + imprimir_menu_transformers(): void
+}
+
+class FusionadorEnergon {
+    - int contador_comun
+    - int contador_raro
+    - int contador_epico
+
+    + FusionadorEnergon()
+    + fusionar(cristal_1: Cristal, cristal_2: Cristal): Cristal
+    + fusionar(cristal_1: Cristal, cristal_2: Cristal, generador: GeneradorAleatorio): Cristal
+    + es_fusion_exitosa(contador: int, porcentaje: size_t, generador: GeneradorAleatorio): bool
+}
+
+class Juego {
+    - Menu menu
+    - std::string nombre_jugador
+    - BovedaCristales boveda
+    - OptimusPrime optimus
+    - Megatron megatron
+    - ManejoTransformer manejo_transformer
+    - bool personaje
+    - Batalla batalla_final
+    - Camino camino_minimo
+    - Archivo tabla_clasificaciones
+
+    + Juego()
+    + cambiar_personaje(): void
+    + procesar_menu_principal(): void
+    + procesar_personajes(): void
+    + procesar_boveda(gestor_boveda: GestorBoveda): void
+    + procesar_transformers(): void
+    + iniciar_ventana_grafica(personaje: bool, camino_min: Camino): void
+}
+
+class ManejoTransformer {
+    - Diccionario<std::string, Transformer*> transformers
+    - size_t cantidad_transformers
+    - Vector<Transformer*> listado
+
+    + ManejoTransformer()
+    + mostrar_listado_transformers(): void
+    + obtener_cantidad_transformer(): size_t
+    + busqueda_transformer(nombre: std::string): Transformer*
+    + alta_transformer(nombre: std::string, fuerza: size_t, defensa: size_t, velocidad: size_t, faccion: size_t, vehiculo: size_t, transformado: bool): void
+    + baja_transformer(nombre: std::string): void
+    + transformar_transformer(transformer: Transformer*): void
+    + obtener_transformers(): Vector<Transformer*>
+    + ~ManejoTransformer()
+}
+
+class Batalla {
+    - Grafo mapa_batalla
+    - Vector<Transformer*> listado
+    - bool personaje
+    - size_t poder_personaje_principal
+    - size_t energia_energon
+    - size_t puntaje
+    - size_t nodo_origen
+    - size_t nodo_final
+    - size_t defensa_personaje
+    - size_t velocidad_personaje
+    - size_t fuerza_personaje
+    - Archivo tabla_clasificaciones
+    - std::string nombre_jugador
+
+    + Batalla()
+    + Batalla(personaje: bool, poder_personaje: size_t, manejo: ManejoTransformer, nombre_jugador: std::string)
+    + proxima_jugada(): Camino
+    + Pelea(camino_actual: Vector<size_t>, optimus: OptimusPrime, megatron: Megatron): void
+    + get_tabla(): Archivo
+}
+
+class GestorBoveda {
+    - BovedaCristales& boveda
+    - Menu& menu
+
+    + GestorBoveda(menu: Menu, boveda: BovedaCristales)
+    + almacenar_cristal(): void
+    + mostrar_cristales(): void
+    + exportar_cristales(): void
+    + fusionar_cristales(): void
+    + mostrar_cristal_mas_poderoso(personaje: bool, optimus: OptimusPrime, megatron: Megatron): void
+    + equipar_cristal(personaje: bool, optimus: OptimusPrime, megatron: Megatron): void
+}
+
+class OptimusPrime {
+    - Animo estado_animo
+    - int fuerza
+    - int defensa
+    - int velocidad
+    - int vehiculo
+    - bool transformado
+    - bool cristal_equipado
+    - int fuerza_equipada
+    - int velocidad_equipada
+    - int defensa_equipada
+
+    + OptimusPrime()
+    + responder(mensaje: std::string): void
+    + sugerir_fusion(): void
+    + cambiar_animo(animo: std::string): void
+    + char_a_string_animo(animo: char): std::string
+    + Opcion_1(): void
+    + poder(): size_t
+    + equipar_cristal(cristal: Cristal): void
+    + get_fuerza(): size_t
+    + get_defensa(): size_t
+    + get_velocidad(): size_t
+    + get_vehiculo(): size_t
+    + get_transformado(): bool
+    + desequipar_cristal(): void
+    + mostrar_estadisticas_equipada(): void
+    + transformar(): void
+}
+
+class Transformer {
+    - std::string nombre
+    - size_t fuerza
+    - size_t defensa
+    - size_t velocidad
+    - bool faccion
+    - size_t vehiculo
+    - bool transformado
+    - size_t fuerza_inicio
+    - size_t defensa_inicio
+    - size_t velocidad_inicio
+
+    + Transformer(nombre: std::string, fuerza: size_t, defensa: size_t, velocidad: size_t, faccion: bool, vehiculo: size_t, transformado: bool)
+    + obtener_nombre(): std::string
+    + obtener_fuerza(): size_t
+    + obtener_defensa(): size_t
+    + obtener_velocidad(): size_t
+    + obtener_faccion(): bool
+    + obtener_vehiculo(): size_t
+    + esta_tranformado(): bool
+    + transformar(): void
+    + obtener_poder(): size_t
+}
+
+
+'Conexiones entre clases'
+OptimusPrime *- "1" Cristal : equipa
+
+Megatron *- "1" Cristal : equipa
+
+Juego *-- Menu
+Juego *-- BovedaCristales
+Juego *-- OptimusPrime
+Juego *-- Megatron
+Juego *-- ManejoTransformer
+Juego *-- Batalla
+Juego --> GestorBoveda
+
+GestorBoveda  *--  BovedaCristales
+GestorBoveda  *--  Menu
+GestorBoveda --> OptimusPrime
+GestorBoveda --> Megatron
+GestorBoveda --> FusionadorEnergon
+
+BovedaCristales *- "0..20" Cristal : contiene
+BovedaCristales -> OptimusPrime
+BovedaCristales -> Megatron
+
+Batalla  *-- "0..18" Transformer : contiene
+Batalla  ->  OptimusPrime
+Batalla  ->  Megatron
+
+ManejoTransformer *- "0..18" Transformer : contiene
+
+FusionadorEnergon --> "2" Cristal
+@enduml
